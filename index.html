@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="dark" />
+<meta name="theme-color" content="#090b10" />
+<title>DATA WILL BE ENTERED LATER — Learning Pattern Prototype</title>
+<meta name="description" content="Prototype: an AI-assisted platform that helps parents notice recurring learning patterns in their child's homework over time." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700;800;900&family=Montserrat:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style2.css" />
+<link rel="stylesheet" href="css/responsive3.css" />
+</head>
+<body>
+
+<!-- ============================= WELCOME ============================= -->
+<section class="screen screen--welcome" data-screen="welcome">
+  <div class="welcome-inner">
+    <div class="welcome-thread" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="welcome-logo" aria-hidden="true"><i data-lucide="git-commit-horizontal"></i></div>
+    <h1 class="welcome-title">DATA WILL BE ENTERED LATER</h1>
+    <p class="welcome-tagline">DATA WILL BE ENTERED LATER</p>
+    <p class="welcome-description">
+      This application helps parents understand their child's learning progress by
+      analyzing homework and identifying recurring learning patterns over time.
+    </p>
+    <button type="button" class="btn btn--primary btn--large" data-nav-target="home">
+      Get Started <i data-lucide="arrow-right"></i>
+    </button>
+    <p class="welcome-proto-tag"><i data-lucide="flask-conical"></i> Prototype • Demonstration Version</p>
+  </div>
+</section>
+
+<!-- ============================= APP SHELL ============================= -->
+<div class="app-shell">
+
+  <div class="sidebar-scrim" id="sidebar-scrim"></div>
+
+  <aside class="app-sidebar" id="app-sidebar">
+    <div class="app-sidebar__brand">
+      <i data-lucide="git-commit-horizontal"></i>
+      <span data-child-name-slot-app-name>DATA WILL BE ENTERED LATER</span>
+    </div>
+
+    <nav class="app-sidebar__nav" aria-label="Primary">
+      <button type="button" data-nav-target="home" data-nav-group="home">
+        <i data-lucide="home"></i> Home
+      </button>
+      <button type="button" data-nav-target="dashboard" data-nav-group="dashboard">
+        <i data-lucide="layout-dashboard"></i> Dashboard
+      </button>
+      <button type="button" data-nav-target="scanner" data-nav-group="scanner">
+        <i data-lucide="scan-line"></i> Scan Homework
+      </button>
+      <button type="button" data-nav-target="patterns" data-nav-group="patterns">
+        <i data-lucide="git-commit-horizontal"></i> Learning Patterns
+      </button>
+      <button type="button" data-nav-target="progress" data-nav-group="progress">
+        <i data-lucide="line-chart"></i> Progress
+      </button>
+      <button type="button" data-nav-target="recommendations" data-nav-group="recommendations">
+        <i data-lucide="sparkles"></i> Recommendations
+      </button>
+      <button type="button" data-nav-target="profile" data-nav-group="profile">
+        <i data-lucide="user"></i> Profile
+      </button>
+    </nav>
+
+    <button type="button" class="app-sidebar__about" data-nav-target="about" data-nav-group="about">
+      <i data-lucide="info"></i> About this prototype
+    </button>
+  </aside>
+
+  <div class="app-main">
+
+    <header class="app-header">
+      <button type="button" class="icon-button app-header__menu" id="btn-menu-toggle" aria-label="Open menu">
+        <i data-lucide="menu"></i>
+      </button>
+      <h1 id="app-header-title">Home</h1>
+      <span class="app-header__badge"><i data-lucide="flask-conical"></i> Prototype</span>
+    </header>
+
+    <main class="app-content" id="app-content">
+
+      <!-- ============================= HOME ============================= -->
+      <section class="screen" data-screen="home">
+        <div class="screen-inner" id="home-root"></div>
+      </section>
+
+      <!-- ============================= DASHBOARD ============================= -->
+      <section class="screen" data-screen="dashboard">
+        <div class="screen-inner">
+          <div id="dashboard-overall-root"></div>
+
+          <div class="section-heading"><h3>Subjects</h3></div>
+          <div class="subjects-grid" id="dashboard-subjects-root"></div>
+
+          <div class="section-heading">
+            <h3>Recent Homework</h3>
+            <button type="button" class="link-button" data-nav-target="scanner">
+              Scan new <i data-lucide="arrow-right"></i>
+            </button>
+          </div>
+          <div class="homework-list" id="dashboard-homework-root"></div>
+
+          <div class="section-heading"><h3>Key Insights</h3></div>
+          <div class="insights-grid" id="dashboard-insights-root"></div>
+        </div>
+      </section>
+
+      <!-- ============================= SCANNER ============================= -->
+      <section class="screen" data-screen="scanner">
+        <div class="screen-inner">
+          <div class="screen-heading">
+            <h2>Scan Homework</h2>
+            <p>Take a clear photo of your child's homework to begin analysis.</p>
+          </div>
+
+          <div class="scan-area card" id="scanner-drop-area">
+            <div class="scan-area__icon"><i data-lucide="camera"></i></div>
+            <p class="scan-area__hint">Position the homework page flat and well-lit for the clearest photo.</p>
+            <div class="scan-area__actions">
+              <button type="button" id="btn-take-photo" class="btn btn--primary btn--large">
+                <i data-lucide="camera"></i> Take Photo
+              </button>
+              <button type="button" id="btn-choose-gallery" class="btn btn--secondary btn--large">
+                <i data-lucide="image"></i> Choose from Gallery
+              </button>
+            </div>
+          </div>
+
+          <p class="prototype-note prototype-note--inline">
+            <i data-lucide="info"></i>
+            Photos stay on this device — nothing is uploaded to a server in this prototype.
+          </p>
+        </div>
+      </section>
+
+      <!-- ============================= PREVIEW ============================= -->
+      <section class="screen" data-screen="preview">
+        <div class="screen-inner">
+          <div class="screen-heading">
+            <h2>Review Homework</h2>
+            <p>Make sure the photo is clear before analyzing.</p>
+          </div>
+
+          <div class="preview-frame card">
+            <img id="preview-image" alt="Selected homework photo" />
+          </div>
+
+          <p class="prototype-note prototype-note--inline">
+            <i data-lucide="info"></i> Prototype analysis uses preloaded demonstration data.
+          </p>
+
+          <div class="screen-actions">
+            <button type="button" id="btn-retake" class="btn btn--secondary btn--large">
+              <i data-lucide="rotate-ccw"></i> Retake
+            </button>
+            <button type="button" id="btn-analyze" class="btn btn--primary btn--large">
+              <i data-lucide="sparkles"></i> Analyze Homework
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================= ANALYZING ============================= -->
+      <section class="screen" data-screen="analyzing">
+        <div class="screen-inner screen-inner--center">
+          <div class="analyzing-thread" id="analysis-thread"></div>
+          <ul class="analysis-steps-list" id="analysis-steps-list"></ul>
+          <p class="prototype-note prototype-note--inline prototype-note--center">
+            <i data-lucide="info"></i> Simulated analysis — no AI model or OCR engine is called in this prototype.
+          </p>
+        </div>
+      </section>
+
+      <!-- ============================= ANALYSIS RESULTS ============================= -->
+      <section class="screen" data-screen="analysis">
+        <div class="screen-inner">
+          <div class="screen-heading screen-heading--with-action">
+            <div>
+              <h2>Homework Analysis</h2>
+            </div>
+            <button type="button" id="btn-scan-another" class="btn btn--secondary btn--small">
+              <i data-lucide="scan-line"></i> Scan Another
+            </button>
+          </div>
+          <div id="analysis-results-root"></div>
+        </div>
+      </section>
+
+      <!-- ============================= LEARNING PATTERNS ============================= -->
+      <section class="screen" data-screen="patterns">
+        <div class="screen-inner">
+          <div class="screen-heading">
+            <h2>Learning Patterns</h2>
+            <p>One assignment is never treated as a conclusion — the platform watches for patterns across many.</p>
+          </div>
+
+          <div id="patterns-guidance-root"></div>
+
+          <div class="card">
+            <div class="card__header"><h3>Observed Over Time</h3></div>
+            <div id="patterns-timeline-root"></div>
+          </div>
+
+          <div class="section-heading"><h3>Recurring Learning Patterns</h3></div>
+          <div class="patterns-grid" id="patterns-recurring-root"></div>
+        </div>
+      </section>
+
+      <!-- ============================= PROGRESS ============================= -->
+      <section class="screen" data-screen="progress">
+        <div class="screen-inner">
+          <div class="screen-heading">
+            <h2>Progress</h2>
+            <p>Track how learning is developing across every subject over time.</p>
+          </div>
+
+          <div class="card chart-card">
+            <div class="card__header">
+              <h3>Overall Progress Over Time</h3>
+            </div>
+            <p class="chart-sample-note">Prototype Analysis · demonstration data</p>
+            <div class="chart-wrap"><div id="chart-overall" role="img" aria-label="Overall progress line chart across five tracked assignments"></div></div>
+          </div>
+
+          <div class="card chart-card">
+            <div class="card__header">
+              <h3>Subject Performance</h3>
+            </div>
+            <p class="chart-sample-note">Prototype Analysis · demonstration data</p>
+            <div class="chart-wrap"><div id="chart-subjects" role="img" aria-label="Subject performance bar chart across four subjects"></div></div>
+          </div>
+
+          <div class="progress-columns">
+            <div>
+              <div class="section-heading"><h3><i data-lucide="star"></i> Strengths</h3></div>
+              <div id="progress-strengths-root" class="mini-card-list"></div>
+            </div>
+            <div>
+              <div class="section-heading"><h3><i data-lucide="target"></i> Areas to Improve</h3></div>
+              <div id="progress-improve-root" class="mini-card-list"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================= RECOMMENDATIONS ============================= -->
+      <section class="screen" data-screen="recommendations">
+        <div class="screen-inner">
+          <div class="screen-heading">
+            <h2>Recommended Activities</h2>
+            <p>Suggested practice based on this prototype's demo analysis.</p>
+          </div>
+          <div id="recommendations-root" class="recommendations-list"></div>
+        </div>
+      </section>
+
+      <!-- ============================= PROFILE ============================= -->
+      <section class="screen" data-screen="profile">
+        <div class="screen-inner" id="profile-root"></div>
+      </section>
+
+      <!-- ============================= ABOUT ============================= -->
+      <section class="screen" data-screen="about">
+        <div class="screen-inner" id="about-root"></div>
+      </section>
+
+    </main>
+
+    <!-- ============================= BOTTOM NAV (mobile) ============================= -->
+    <nav class="bottom-nav" aria-label="Primary">
+      <button type="button" data-nav-target="home" data-nav-tab="home">
+        <i data-lucide="home"></i><span>Home</span>
+      </button>
+      <button type="button" data-nav-target="scanner" data-nav-tab="scan">
+        <i data-lucide="scan-line"></i><span>Scan</span>
+      </button>
+      <button type="button" data-nav-target="progress" data-nav-tab="progress">
+        <i data-lucide="line-chart"></i><span>Progress</span>
+      </button>
+      <button type="button" data-nav-target="profile" data-nav-tab="profile">
+        <i data-lucide="user"></i><span>Profile</span>
+      </button>
+    </nav>
+
+  </div>
+</div>
+
+<!-- Hidden file inputs driving the camera / gallery capture -->
+<input type="file" id="scanner-camera-input" accept="image/*" capture="environment" hidden />
+<input type="file" id="scanner-gallery-input" accept="image/*" hidden />
+
+<div id="modal-root"></div>
+<div id="toast-root" aria-live="polite"></div>
+
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+
+<script src="js/data.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/scanner.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
