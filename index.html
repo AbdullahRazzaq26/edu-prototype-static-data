@@ -229,7 +229,7 @@
               <h3>Overall Progress Over Time</h3>
             </div>
             <p class="chart-sample-note">Prototype Analysis · demonstration data</p>
-            <div class="chart-wrap"><div id="chart-overall" role="img" aria-label="Overall progress line chart across five tracked assignments"></div></div>
+            <div class="chart-wrap"><canvas id="chart-overall" role="img" aria-label="Overall progress line chart across five tracked assignments"></canvas></div>
           </div>
 
           <div class="card chart-card">
@@ -237,7 +237,7 @@
               <h3>Subject Performance</h3>
             </div>
             <p class="chart-sample-note">Prototype Analysis · demonstration data</p>
-            <div class="chart-wrap"><div id="chart-subjects" role="img" aria-label="Subject performance bar chart across four subjects"></div></div>
+            <div class="chart-wrap"><canvas id="chart-subjects" role="img" aria-label="Subject performance bar chart across four subjects"></canvas></div>
           </div>
 
           <div class="progress-columns">
@@ -303,6 +303,7 @@
 <div id="toast-root" aria-live="polite"></div>
 
 <script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.umd.min.js"></script>
 
 <script src="js/data.js"></script>
 <script src="js/utils.js"></script>

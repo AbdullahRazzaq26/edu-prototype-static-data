@@ -182,128 +182,115 @@ const Dashboard = (() => {
     Utils.renderIcons();
   }
 
-  /* -------------------------------------------------------- PROGRESS CHARTS
-   * These charts are intentionally rendered with inline SVG instead of an
-   * external Chart.js CDN dependency. The prototype is expected to work
-   * when opened locally/offline, so the visual chart layer must not depend
-   * on an internet connection or a third-party script loading correctly.
-   */
+  /** True once the Chart.js CDN script has loaded successfully. */
+  function chartLibReady(canvasId) {
+    if (typeof Chart !== "undefined") return true;
+    const ctx = document.getElementById(canvasId);
+    if (ctx) {
+      const wrap = ctx.closest(".chart-wrap");
+      if (wrap) {
+        wrap.innerHTML = `
+          <div class="chart-fallback">
+            <i data-lucide="bar-chart"></i>
+            <span>Chart library could not be loaded. Check your internet connection and reload.</span>
+          </div>`;
+        Utils.renderIcons();
+      }
+    }
+    return false;
+  }
 
   function renderOverallChart() {
-    const root = document.getElementById("chart-overall");
-    if (!root) return;
-
-    const labels = progressChartData.overallOverTime.labels;
-    const values = progressChartData.overallOverTime.values;
-    root.outerHTML = buildLineChartSVG(labels, values, "Overall progress");
+    const ctx = document.getElementById("chart-overall");
+    if (!ctx || !chartLibReady("chart-overall")) return;
+    if (overallChart) overallChart.destroy();
+    overallChart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: progressChartData.overallOverTime.labels,
+        datasets: [{
+          label: "Overall progress",
+          data: progressChartData.overallOverTime.values,
+          borderColor: "#8f9cff",
+          backgroundColor: "rgba(124,140,255,0.14)",
+          borderWidth: 2.5,
+          tension: 0.35,
+          fill: true,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          pointBackgroundColor: "#11151d",
+          pointBorderColor: "#8f9cff",
+          pointBorderWidth: 2,
+          spanGaps: false
+        }]
+      },
+      options: chartOptions("Score")
+    });
   }
 
   function renderSubjectChart() {
-    const root = document.getElementById("chart-subjects");
-    if (!root) return;
-
-    const labels = progressChartData.subjectPerformance.labels;
-    const values = progressChartData.subjectPerformance.values;
-    root.outerHTML = buildBarChartSVG(labels, values);
-  }
-
-  function buildLineChartSVG(labels, values, ariaLabel) {
-    const width = 900;
-    const height = 280;
-    const pad = { top: 28, right: 28, bottom: 48, left: 48 };
-    const innerW = width - pad.left - pad.right;
-    const innerH = height - pad.top - pad.bottom;
-    const max = 100;
-    const min = 0;
-    const xStep = labels.length > 1 ? innerW / (labels.length - 1) : innerW;
-
-    const points = values.map((value, i) => {
-      const safe = value == null ? 0 : Math.max(min, Math.min(max, Number(value)));
-      return {
-        x: pad.left + i * xStep,
-        y: pad.top + innerH - ((safe - min) / (max - min)) * innerH,
-        value: value == null ? null : safe
-      };
+    const ctx = document.getElementById("chart-subjects");
+    if (!ctx || !chartLibReady("chart-subjects")) return;
+    if (subjectChart) subjectChart.destroy();
+    subjectChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: progressChartData.subjectPerformance.labels,
+        datasets: [{
+          label: "Subject performance",
+          data: progressChartData.subjectPerformance.values,
+          backgroundColor: ["#8f9cff", "#48d597", "#f2b85b", "#a4acba"],
+          borderRadius: 8,
+          borderSkipped: false,
+          maxBarThickness: 46,
+          categoryPercentage: 0.62,
+          barPercentage: 0.9
+        }]
+      },
+      options: chartOptions("Score")
     });
-
-    const line = points.map((p, i) => `${i ? "L" : "M"}${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(" ");
-    const area = `${line} L ${points[points.length - 1].x.toFixed(1)} ${(pad.top + innerH).toFixed(1)} L ${points[0].x.toFixed(1)} ${(pad.top + innerH).toFixed(1)} Z`;
-    const grid = [0, 25, 50, 75, 100].map(v => {
-      const y = pad.top + innerH - (v / 100) * innerH;
-      return `<line class="svg-chart__grid" x1="${pad.left}" y1="${y}" x2="${width-pad.right}" y2="${y}" />
-              <text class="svg-chart__y-label" x="${pad.left-12}" y="${y+4}" text-anchor="end">${v}</text>`;
-    }).join("");
-    const xLabels = labels.map((label, i) => {
-      const x = pad.left + i * xStep;
-      return `<text class="svg-chart__x-label" x="${x}" y="${height-14}" text-anchor="middle">${Utils.escapeHTML(label)}</text>`;
-    }).join("");
-    const dots = points.map((p, i) => {
-      const label = values[i] == null ? "DATA WILL BE ENTERED LATER" : `${values[i]}%`;
-      return `<g class="svg-chart__point-group">
-        <circle class="svg-chart__point-glow" cx="${p.x}" cy="${p.y}" r="9" />
-        <circle class="svg-chart__point" cx="${p.x}" cy="${p.y}" r="5" />
-        <title>${Utils.escapeHTML(labels[i])}: ${Utils.escapeHTML(label)}</title>
-      </g>`;
-    }).join("");
-
-    return `<svg id="chart-overall" class="svg-chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="${Utils.escapeHTML(ariaLabel)}" preserveAspectRatio="none">
-      <defs>
-        <linearGradient id="overallAreaGradient" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#8f9cff" stop-opacity="0.24" />
-          <stop offset="100%" stop-color="#8f9cff" stop-opacity="0" />
-        </linearGradient>
-        <filter id="chartGlow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="5" result="blur" />
-        </filter>
-      </defs>
-      ${grid}
-      <path class="svg-chart__area" d="${area}" />
-      <path class="svg-chart__line" d="${line}" />
-      ${dots}
-      ${xLabels}
-    </svg>`;
   }
 
-  function buildBarChartSVG(labels, values) {
-    const width = 900;
-    const height = 280;
-    const pad = { top: 28, right: 28, bottom: 58, left: 48 };
-    const innerW = width - pad.left - pad.right;
-    const innerH = height - pad.top - pad.bottom;
-    const slot = innerW / labels.length;
-    const barW = Math.min(70, slot * 0.52);
-    const barColors = ["#8f9cff", "#48d597", "#f2b85b", "#a4acba"];
-
-    const grid = [0, 25, 50, 75, 100].map(v => {
-      const y = pad.top + innerH - (v / 100) * innerH;
-      return `<line class="svg-chart__grid" x1="${pad.left}" y1="${y}" x2="${width-pad.right}" y2="${y}" />
-              <text class="svg-chart__y-label" x="${pad.left-12}" y="${y+4}" text-anchor="end">${v}</text>`;
-    }).join("");
-
-    const bars = labels.map((label, i) => {
-      const value = values[i] == null ? 0 : Math.max(0, Math.min(100, Number(values[i])));
-      const h = (value / 100) * innerH;
-      const x = pad.left + slot * i + (slot - barW) / 2;
-      const y = pad.top + innerH - h;
-      const color = barColors[i % barColors.length];
-      return `<g class="svg-chart__bar-group">
-        <rect class="svg-chart__bar-shadow" x="${x+3}" y="${y+5}" width="${barW}" height="${h}" rx="10" />
-        <rect class="svg-chart__bar" x="${x}" y="${y}" width="${barW}" height="${h}" rx="10" fill="${color}" />
-        <text class="svg-chart__value" x="${x + barW/2}" y="${Math.max(18, y-9)}" text-anchor="middle">${values[i] == null ? "—" : value}</text>
-        <text class="svg-chart__x-label" x="${x + barW/2}" y="${height-18}" text-anchor="middle">${Utils.escapeHTML(label)}</text>
-        <title>${Utils.escapeHTML(label)}: ${values[i] == null ? "DATA WILL BE ENTERED LATER" : value + "%"}</title>
-      </g>`;
-    }).join("");
-
-    return `<svg id="chart-subjects" class="svg-chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="Subject performance bar chart" preserveAspectRatio="none">
-      <defs>
-        <filter id="barShadow" x="-50%" y="-20%" width="200%" height="160%">
-          <feGaussianBlur stdDeviation="5" />
-        </filter>
-      </defs>
-      ${grid}
-      ${bars}
-    </svg>`;
+  function chartOptions(yLabel) {
+    return {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 750, easing: "easeOutQuart" },
+      interaction: { mode: "nearest", intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: "#1a202b",
+          borderColor: "rgba(124,140,255,.25)",
+          borderWidth: 1,
+          titleFont: { family: "Montserrat", weight: "600", size: 12 },
+          bodyFont: { family: "Montserrat", size: 12 },
+          titleColor: "#f3f5f8",
+          bodyColor: "#a4acba",
+          padding: 10,
+          cornerRadius: 8,
+          displayColors: false,
+          callbacks: {
+            label: (item) => (item.raw === null ? "DATA WILL BE ENTERED LATER" : item.raw)
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 100,
+          title: { display: true, text: yLabel, font: { family: "Montserrat", size: 11, weight: "500" }, color: "#a4acba" },
+          ticks: { font: { family: "Montserrat", size: 11 }, color: "#697384" },
+          grid: { color: "rgba(255,255,255,.06)" },
+          border: { display: false }
+        },
+        x: {
+          ticks: { font: { family: "Montserrat", size: 11 }, color: "#a4acba" },
+          grid: { display: false },
+          border: { display: false }
+        }
+      }
+    };
   }
 
   /* -------------------------------------------------------- PATTERNS */
