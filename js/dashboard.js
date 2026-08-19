@@ -237,9 +237,9 @@ const Dashboard = (() => {
       data: {
         labels: progressChartData.subjectPerformance.labels,
         datasets: [{
-          label: "Subject performance",
+          label: "Learning & problem areas",
           data: progressChartData.subjectPerformance.values,
-          backgroundColor: ["#8f9cff", "#48d597", "#f2b85b", "#a4acba"],
+          backgroundColor: ["#48d597", "#48d597", "#f2b85b", "#f2b85b", "#f2b85b"],
           borderRadius: 8,
           borderSkipped: false,
           maxBarThickness: 46,

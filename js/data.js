@@ -32,7 +32,7 @@ const childData = {
   overallProgress: 78, // 0–100
   assignmentsAnalyzed: "12",
   memberSince: "September 2025",
-  learningJourneyNote: "Ayaan is showing steady progress across core subjects. His strongest areas are reading comprehension and written expression, while multi-step mathematics problems and fraction concepts continue to need focused practice."
+  learningJourneyNote: "Ayaan is showing steady improvement over the current observation period. Performance has been more consistent when information is presented visually or in a clear, step-by-step sequence. Some difficulty remains when instructions become lengthy or linguistically complex."
 };
 
 /* ------------------------------------------------------------------
@@ -64,10 +64,10 @@ const recentHomeworkData = [
  * Key insight cards (dashboard). "type" drives icon + accent colour.
  * ------------------------------------------------------------------ */
 const insightsData = [
-  { type: "improving", icon: "trending-up", label: "Improving in",               text: "Reading comprehension and identifying key ideas in longer passages" },
-  { type: "practice",  icon: "target",      label: "Needs more practice in",     text: "Multi-step fraction problems in Mathematics" },
-  { type: "pattern",   icon: "link-2",      label: "Recurring pattern detected", text: "Repeated difficulty keeping accuracy across multi-step fraction questions" },
-  { type: "strength",  icon: "star",        label: "Strong area",                text: "Reading comprehension and written expression" }
+  { type: "improving", icon: "trending-up", label: "Improving in",               text: "Overall performance, week over week, with steady gains in consistency" },
+  { type: "practice",  icon: "target",      label: "Needs more practice in",     text: "Processing longer, multi-step written instructions" },
+  { type: "pattern",   icon: "link-2",      label: "Recurring pattern detected", text: "Repeated difficulty with lengthy or linguistically complex written instructions" },
+  { type: "strength",  icon: "star",        label: "Strong area",                text: "Visual information and clearly structured, step-by-step tasks" }
 ];
 
 /* ------------------------------------------------------------------
@@ -159,7 +159,7 @@ const patternTimeline = [
 
 const patternTimelineMeta = {
   assignmentsAnalyzed: "12",
-  summary: "A recurring difficulty with multi-step fraction problems appeared across several mathematics assignments, with accuracy showing early signs of improvement after targeted practice."
+  summary: "A recurring pattern appeared across several assignments: performance was more consistent when information was visual or presented in a step-by-step sequence, with more difficulty appearing as instructions grew longer or more linguistically complex. Accuracy has shown early signs of improvement after targeted, structured practice."
 };
 
 /* ------------------------------------------------------------------
@@ -167,9 +167,9 @@ const patternTimelineMeta = {
  * back to the same subjects already established above.
  * ------------------------------------------------------------------ */
 const recurringPatternsData = [
-  { pattern: "Multi-step fraction problems",        frequency: "4 of 6 mathematics assignments", trend: "Improving",        status: "improving" },
-  { pattern: "Punctuation in compound sentences",    frequency: "3 of 5 English assignments",     trend: "Stable",           status: "stable" },
-  { pattern: "Difficulty extracting evidence from text", frequency: "3 of 4 reading assignments", trend: "Needs monitoring", status: "attention" }
+  { pattern: "Long written instructions",     frequency: "5 of 9 written assignments", trend: "Needs monitoring", status: "attention" },
+  { pattern: "Unfamiliar task formats",       frequency: "3 of 7 assignments",         trend: "Stable",           status: "stable" },
+  { pattern: "Linguistically complex prompts", frequency: "4 of 8 assignments",        trend: "Improving",        status: "improving" }
 ];
 
 /* Professional-guidance banner shown only when a pattern has persisted.
@@ -185,17 +185,19 @@ const professionalGuidance = {
 
 /* ------------------------------------------------------------------
  * Progress charts (Chart.js). Values now reflect the same fictional
- * child's story: overall score climbing 62 → 78 across 5 tracked
- * assignments, and subject performance matching subjectsData above.
+ * child's story: overall score climbing 62 → 72 week over week, and
+ * the second chart showing which learning conditions correspond to
+ * stronger performance vs. more difficulty (rather than school
+ * subjects) — matching the rest of the child's profile above.
  * ------------------------------------------------------------------ */
 const progressChartData = {
   overallOverTime: {
-    labels: ["Assignment 1", "Assignment 2", "Assignment 3", "Assignment 4", "Assignment 5"],
-    values: [62, 66, 69, 73, 78]
+    labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+    values: [62, 66, 70, 72]
   },
   subjectPerformance: {
-    labels: ["Mathematics", "English", "Reading", "Writing"],
-    values: [68, 82, 88, 76]
+    labels: ["Visual Information", "Sequential Instructions", "Long Written Instructions", "Unfamiliar Word Problems", "Complex Written Prompts"],
+    values: [88, 84, 64, 61, 58]
   }
 };
 
@@ -204,12 +206,14 @@ const progressChartData = {
  * stays in sync with the rest of the child's story in one place. */
 const progressHighlights = {
   strengths: [
-    "Reading comprehension and identifying key ideas",
-    "Vocabulary recognition and written expression"
+    "Visual information, such as diagrams and visual cues",
+    "Numbered, step-by-step instructions",
+    "Clearly structured task goals"
   ],
   improvements: [
-    "Multi-step fraction problems in Mathematics",
-    "Maintaining accuracy across longer written responses"
+    "Processing long written instructions",
+    "Unfamiliar task formats",
+    "Linguistically complex written prompts"
   ]
 };
 
@@ -219,40 +223,40 @@ const progressHighlights = {
  * ------------------------------------------------------------------ */
 const recommendationsData = [
   {
-    id: "reading-practice",
-    icon: "book-open",
-    title: "Reading practice",
-    reason: "Reading comprehension is a strong area, and inference practice can help extend this skill further.",
+    id: "break-into-steps",
+    icon: "list-ordered",
+    title: "Break instructions into steps",
+    reason: "Long written instructions are more difficult to process consistently.",
     duration: "15 minutes",
     difficulty: "Moderate",
-    description: "Read a short passage and answer questions that require identifying clues and making simple inferences."
+    description: "Present one action at a time while keeping the same learning objective."
   },
   {
-    id: "math-exercises",
-    icon: "calculator",
-    title: "Math exercises",
-    reason: "Recent assignments show that multi-step fraction problems need additional practice.",
-    duration: "20 minutes",
+    id: "add-visual-structure",
+    icon: "image",
+    title: "Add visual structure",
+    reason: "Performance is stronger when key information is presented visually.",
+    duration: "15 minutes",
     difficulty: "Moderate",
-    description: "Practice equivalent fractions, common denominators, and short multi-step fraction problems."
+    description: "Pair important information with a diagram, worked example, or numbered sequence where appropriate."
   },
   {
-    id: "spelling-practice",
-    icon: "spell-check",
-    title: "Spelling practice",
-    reason: "Regular spelling practice can reinforce accuracy during written work.",
+    id: "clarify-unfamiliar-tasks",
+    icon: "help-circle",
+    title: "Clarify unfamiliar tasks",
+    reason: "Additional clarification may be needed when the task format is unfamiliar.",
     duration: "10 minutes",
     difficulty: "Easy",
-    description: "Complete a short set of age-appropriate spelling and word-pattern exercises."
+    description: "Ask Ayaan to explain what the question is asking before beginning the solution."
   },
   {
-    id: "writing-exercise",
+    id: "simplify-complex-prompts",
     icon: "pencil-line",
-    title: "Writing exercise",
-    reason: "Written responses are developing steadily and can benefit from structured practice.",
+    title: "Simplify complex written prompts",
+    reason: "More omissions were observed as the linguistic complexity of a prompt increased.",
     duration: "15 minutes",
     difficulty: "Moderate",
-    description: "Write a short paragraph using correct punctuation, sentence structure, and supporting details."
+    description: "Break complex wording into shorter, clearer statements while keeping the same learning objective."
   }
 ];
 
